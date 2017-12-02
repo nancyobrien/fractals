@@ -12,8 +12,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "precommit": "npm run lint:staged",
-    "lint-staged": "lint-staged"
+    
   },
   "keywords": [],
   "author": "NDO",

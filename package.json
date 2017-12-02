@@ -11,7 +11,7 @@
     "dev": "webpack-dashboard -- webpack-dev-server",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage"
     
   },
   "keywords": [],

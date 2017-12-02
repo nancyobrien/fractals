@@ -4,6 +4,8 @@
   "description": "My Project\r ---",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server --hot --open",
+    "compile": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,6 +17,11 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "eslint": "^4.12.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "webpack": "^3.9.1"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^2.9.5"
   }
 }

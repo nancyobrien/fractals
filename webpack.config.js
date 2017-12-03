@@ -4,7 +4,7 @@ const path = require('path');
 const loaders = require('./webpack.loaders');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const DashboardkPlugin = require('webpack-dashboard/plugin');
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const HOST = process.env.HOST || '127.0.0.1';
 const PORT = process.env.PORT || '8080';
@@ -34,7 +34,7 @@ module.exports = {
 			path.join(__dirname, '/src/js'),
 			'node_modules'
 		],
-		alias {
+		alias: {
 			symbol: 'es6-symbol',
 			'~': path.join(__dirname, '/src')
 		}
@@ -49,7 +49,7 @@ module.exports = {
 		//embed the webpack-dev-server runtime into the bundle
 		inline: true,
 		//serve index.html in place of 404 responses to allow HTML5 history
-		historyAPIFallback: true,
+		historyApiFallback: true,
 		port: PORT,
 		host: HOST
 	},
@@ -60,7 +60,7 @@ module.exports = {
 			filename: 'style.css',
 			allChunks: true
 		}),
-		new DashboadPlugin(),
+		new DashboardPlugin(),
 		new HtmlWebpackPlugin({
 			template: './src/template.html',
 			files: {

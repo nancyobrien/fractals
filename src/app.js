@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
+
+import Rectangle from './components/Rectangle';
 
 function mapStateToProps(state) {
 	return {
@@ -10,17 +12,21 @@ function mapStateToProps(state) {
 
 class App extends Component {
 	render() {
+		const baseSize = 100;
+		const basePosition = {x: 200, y: 350};
+
 		return (
 			<div>
-				App
+				<svg width="500" height="500" viewBox="0 0 500 500"
+					xmlns="http://www.w3.org/2000/svg">
+
+					<Rectangle size={baseSize} position={basePosition} rotation={0} /> 
+				</svg>
 			</div>
 		);
 	}
 }
 
-App.propTypes = {
-
-};
 
 export default connect(
 	mapStateToProps,

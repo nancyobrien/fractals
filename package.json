@@ -16,6 +16,7 @@
   "keywords": [],
   "author": "NDO",
   "license": "ISC",
+  "homepage": "https: //nancyobrien.github.io/fractals/",
   "dependencies": {
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",

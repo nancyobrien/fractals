@@ -14,9 +14,16 @@ function mapStateToProps(state) {
 }
 
 class App extends Component {
+	state = {
+		itsFall: false
+	}
+	dropLeaves = () => {
+		this.setState({ itsFall: true});
+	}
 	render() {
 		const baseSize = 200;
 		const basePosition = {x: 200, y: 0};
+		const { itsFall } = this.state;
 
 		return (
 			<div>
@@ -37,8 +44,10 @@ class App extends Component {
 							<stop offset="1" style={{stopColor:"white", stopOpacity:0}} />
 						</linearGradient>
 					</defs>
-					<Rectangle size={baseSize} anchorPoint={basePosition} rotation={0} isRoot={true} type="root" /> 
+					<Rectangle size={baseSize} anchorPoint={basePosition} rotation={0} isRoot={true} type="root" falling={itsFall} /> 
 				</svg>
+
+				<button onClick={this.dropLeaves}>It's Fall!</button>
 			</div>
 		);
 	}

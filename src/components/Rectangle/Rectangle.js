@@ -58,7 +58,7 @@ class Rectangle extends Component {
 
 	render() {
 		const { stepAngle, opacity } = this.state;
-		const { size, anchorPoint, rotation, type, generation } = this.props;
+		const { size, anchorPoint, rotation, type, generation, falling } = this.props;
 		const rotationRadians = rotation * this.pi180;
 		const rotCos = Math.cos(rotationRadians);
 		const rotSin = Math.sin(rotationRadians);
@@ -130,14 +130,15 @@ class Rectangle extends Component {
 		const ranColor = this.greens[Math.floor(Math.random() * this.greens.length)];
 		const drawRadius = (this.props.generation < 5) ? size * 0.5 :  size ;
 
+		const yPos = (falling) ? 0 : thisMid.y
+
 		let circle = null;
 		if (this.props.generation < 3) { 
 			circle = <circle cx={thisMid.x} cy={thisMid.y} r={branchWidth * .75} fill='slategray' />;
 		} else {
-			circle = <circle className={'leaf ' + animationClass} cx={thisMid.x} cy={thisMid.y} r={drawRadius} fill={ranColor} fillOpacity={opacity} />;
+			circle = <circle className={'leaf ' + animationClass} cx={thisMid.x} cy={yPos} r={drawRadius} fill={ranColor} fillOpacity={opacity} />;
 		}
 
-		
 
 		return (
 			<Fragment>
@@ -154,8 +155,8 @@ class Rectangle extends Component {
 					if (this.state.loadChildren && (size >= this.cutoff)) {  
 						return (
 							<Fragment>
-								<Rectangle generation={this.props.generation + 1} size={childSize} anchorPoint={childPosition1.anchorPoint} midPoint={midPoint1} rotation={childPosition1.angle} type='left' />
-								<Rectangle generation={this.props.generation + 1} size={childSize} anchorPoint={childPosition2.anchorPoint} midPoint={midPoint2} rotation={childPosition2.angle} type='right' />
+								<Rectangle generation={this.props.generation + 1} size={childSize} anchorPoint={childPosition1.anchorPoint} midPoint={midPoint1} rotation={childPosition1.angle} type='left' falling={falling} />
+								<Rectangle generation={this.props.generation + 1} size={childSize} anchorPoint={childPosition2.anchorPoint} midPoint={midPoint2} rotation={childPosition2.angle} type='right' falling={falling} />
 
 							</Fragment>
 						)
@@ -176,7 +177,8 @@ Rectangle.propTypes = {
 	rotationPoint: PropTypes.object,
 	color: PropTypes.string,
 	isRoot: PropTypes.bool,
-	childDelay: PropTypes.number
+	childDelay: PropTypes.number,
+	falling: PropTypes.bool
 };
 
 Rectangle.defaultProps = {
@@ -188,7 +190,8 @@ Rectangle.defaultProps = {
 	rotationPoint: null,
 	color: "black",
 	isRoot: false,
-	childDelay: 100
+	childDelay: 100,
+	falling: false
 };
 
 export default Rectangle; 

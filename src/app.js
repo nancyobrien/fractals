@@ -15,15 +15,19 @@ function mapStateToProps(state) {
 
 class App extends Component {
 	state = {
-		itsFall: false
+		itsFall: false,
+		buttonText: 'Autumn'
 	}
-	dropLeaves = () => {
-		this.setState({ itsFall: true});
+	toggleLeaves = () => {
+		this.setState({ 
+			itsFall: !this.state.itsFall,
+			buttonText: (this.state.itsFall) ? 'Spring' : 'Autumn'
+		});
 	}
 	render() {
 		const baseSize = 200;
 		const basePosition = {x: 200, y: 0};
-		const { itsFall } = this.state;
+		const { itsFall, buttonText } = this.state;
 
 		return (
 			<div>
@@ -47,7 +51,7 @@ class App extends Component {
 					<Rectangle size={baseSize} anchorPoint={basePosition} rotation={0} isRoot={true} type="root" falling={itsFall} /> 
 				</svg>
 
-				<button onClick={this.dropLeaves}>It's Fall!</button>
+				<button className="seasonChanger" onClick={this.toggleLeaves}>{buttonText}</button>
 			</div>
 		);
 	}

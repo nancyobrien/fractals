@@ -11,7 +11,7 @@ const PORT = process.env.PORT || '8080';
 
 loaders.push({
 	test: /\.scss$/,
-	loaders: ['style.loader', 'css-loader?importLoaders=1', 'sass-loader'],
+	loaders: ['style-loader', 'css-loader?importLoaders=1', 'sass-loader'],
 	exclude: ['node_modules']
 })
 

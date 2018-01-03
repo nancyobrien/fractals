@@ -8,6 +8,40 @@ class Rectangle extends Component {
 	pi180 = Math.PI / 180;
 	sqrt2over2 = Math.sqrt(2)/2;
 
+
+
+	constructor(props) {
+        super(props)
+
+		let stepAngle = this.defaultAngle;
+		if  (this.props.generation > 3) {
+			stepAngle = Math.ceil(Math.random() * 18) * 5;
+		}
+
+        this.state = {
+			loadChildren: false,
+			animating: false,
+			stepAngle: stepAngle,
+			opacity: (this.props.size < 190) ? (Math.random() * .75 + .25) : 1
+
+		}
+    }
+
+	componentDidMount = () => {
+		setTimeout(() => {
+			this.setState({ animating: true });
+		}, 10);
+
+		setTimeout(() => {
+			this.setState({ loadChildren: true });
+		}, this.props.childDelay * 1);
+
+	}
+
+	componentWillReceiveProps = (nextProps) => {
+		console.log(nextProps);
+	}
+
 	getMidPoint = (x, y, width, height, angle_degrees) => {
 		var angle_rad = angle_degrees * this.pi180;
 		var cosa = Math.cos(angle_rad);
@@ -20,16 +54,15 @@ class Rectangle extends Component {
 		};
 	}
 
+
 	render() {
-		//console.log('rect-', this.props.generation);
+		console.log('rect-', this.props.generation);
+		const { stepAngle, opacity } = this.state;
 		const { size, anchorPoint, rotation, type, generation } = this.props;
 		const rotationRadians = rotation * this.pi180;
 		const rotCos = Math.cos(rotationRadians);
 		const rotSin = Math.sin(rotationRadians);
-		let stepAngle = this.defaultAngle;
-		if  (this.props.generation > 3) {
-			stepAngle = Math.ceil(Math.random() * 18) * 5;
-		}
+
 
 		let childPosition1 = {};
 		let childPosition2 = {};
@@ -81,11 +114,11 @@ class Rectangle extends Component {
 			return pt.x + ',' + pt.y
 		}).join(','); */
 
+		const animationClass = (this.state.animating) ? '' : 'start';
 
-		const opacity = (size < 190) ? (Math.random() * .75 + .25) : 1;
 		const branchWidth = Math.max((size / 10), 2);
 		const lineLeft = {
-			stroke: 'grey',
+			stroke: 'grey', 
 			strokeWidth: branchWidth
 		};
 		const lineRight = {
@@ -100,10 +133,11 @@ class Rectangle extends Component {
 		if (this.props.generation < 3) { 
 			circle = <circle cx={thisMid.x} cy={thisMid.y} r={branchWidth * .75} fill='slategray' />;
 		} else {
-			circle = <circle cx={thisMid.x} cy={thisMid.y} r={drawRadius} fill={ranColor} fillOpacity={opacity} />;
+			circle = <circle className={'leaf ' + animationClass} cx={thisMid.x} cy={thisMid.y} r={drawRadius} fill={ranColor} fillOpacity={opacity} />;
 		}
 
 		
+
 		return (
 			<Fragment>
 				<g>
@@ -116,7 +150,7 @@ class Rectangle extends Component {
 				</g>
 
 				{(() => {
-					if (size >= this.cutoff) {  
+					if (this.state.loadChildren && (size >= this.cutoff)) {  
 						return (
 							<Fragment>
 								<Rectangle generation={this.props.generation + 1} size={childSize} anchorPoint={childPosition1.anchorPoint} midPoint={midPoint1} rotation={childPosition1.angle} type='left' />
@@ -140,7 +174,8 @@ Rectangle.propTypes = {
 	rotation: PropTypes.number,
 	rotationPoint: PropTypes.object,
 	color: PropTypes.string,
-	isRoot: PropTypes.bool
+	isRoot: PropTypes.bool,
+	childDelay: PropTypes.number
 };
 
 Rectangle.defaultProps = {
@@ -151,7 +186,8 @@ Rectangle.defaultProps = {
 	rotation: 0,
 	rotationPoint: null,
 	color: "black",
-	isRoot: false
+	isRoot: false,
+	childDelay: 100
 };
 
 export default Rectangle; 

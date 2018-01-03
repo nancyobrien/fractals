@@ -63,7 +63,7 @@ class Rectangle extends Component {
 		const rotCos = Math.cos(rotationRadians);
 		const rotSin = Math.sin(rotationRadians);
 
-		console.log('rect-', (this.props.childDelay / this.props.generation));
+		//console.log('rect-', (this.props.childDelay / this.props.generation));
 
 		let childPosition1 = {};
 		let childPosition2 = {};

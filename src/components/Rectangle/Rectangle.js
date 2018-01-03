@@ -11,30 +11,31 @@ class Rectangle extends Component {
 
 
 	constructor(props) {
-        super(props)
+		super(props)
 
 		let stepAngle = this.defaultAngle;
 		if  (this.props.generation > 3) {
 			stepAngle = Math.ceil(Math.random() * 18) * 5;
 		}
 
-        this.state = {
+		this.state = {
 			loadChildren: false,
 			animating: false,
 			stepAngle: stepAngle,
 			opacity: (this.props.size < 190) ? (Math.random() * .75 + .25) : 1
 
 		}
-    }
+	}
 
 	componentDidMount = () => {
+		const childDelay = (this.props.childDelay / this.props.generation);
 		setTimeout(() => {
 			this.setState({ animating: true });
-		}, 10);
+		}, Math.min(10, childDelay - 1));
 
 		setTimeout(() => {
 			this.setState({ loadChildren: true });
-		}, this.props.childDelay * 1);
+		}, childDelay);
 
 	}
 
@@ -56,17 +57,17 @@ class Rectangle extends Component {
 
 
 	render() {
-		console.log('rect-', this.props.generation);
 		const { stepAngle, opacity } = this.state;
 		const { size, anchorPoint, rotation, type, generation } = this.props;
 		const rotationRadians = rotation * this.pi180;
 		const rotCos = Math.cos(rotationRadians);
 		const rotSin = Math.sin(rotationRadians);
 
+		console.log('rect-', (this.props.childDelay / this.props.generation));
 
 		let childPosition1 = {};
 		let childPosition2 = {};
-		const childAngle = (type === 'left' || type === 'root') ? (rotation + stepAngle) : (rotation - stepAngle);
+		const childAngle = (type === 'left' || type === 'root') ? (rotation + stepAngle) : (rotation - (90 - stepAngle));
 		const childSize = this.sqrt2over2 * size;
 
 

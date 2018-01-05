@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import '../styles/index.scss';
 
 import Rectangle from './components/Rectangle';
-
-
-
-function mapStateToProps(state) {
-	return {
-
-	};
-}
+import SeasonButton from './components/SeasonButton';
 
 class App extends Component {
 	state = {
@@ -21,7 +13,7 @@ class App extends Component {
 	toggleLeaves = () => {
 		this.setState({ 
 			itsFall: !this.state.itsFall,
-			buttonText: (this.state.itsFall) ? 'Spring' : 'Autumn'
+			buttonText: (this.state.itsFall) ? 'Autumn' : 'Spring'
 		});
 	}
 	render() {
@@ -51,13 +43,11 @@ class App extends Component {
 					<Rectangle size={baseSize} anchorPoint={basePosition} rotation={0} isRoot={true} type="root" falling={itsFall} /> 
 				</svg>
 
-				<button className="seasonChanger" onClick={this.toggleLeaves}>{buttonText}</button>
+				<SeasonButton />
 			</div>
 		);
 	}
 }
 
 
-export default connect(
-	mapStateToProps,
-)(App);
+export default App;

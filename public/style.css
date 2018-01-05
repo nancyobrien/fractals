@@ -1,10 +1,19 @@
+.leafContainer {
+  transition: none;
+}
+
+.leafContainer.falling {
+  transition: transform ease-out 1s;
+}
+
 .leaf {
-  transition: all ease-in 500ms;
+  transition: fill ease-in 500ms, transform ease-out 500ms;
   transform: scale(1, 1);
   transform-origin: center;
 }
 
 .leaf.start {
+  transition: fill ease-in 250ms;
   transform: scale(0, 0);
 }
 
@@ -14,11 +23,58 @@
   left: 1em;
 }
 
-@keyframes fadeIn {
-  0% {
-    fill-opacity: 0;
-  }
-  100% {
-    fill-opacity: 1;
-  }
+.color1 {
+  fill: green;
+}
+
+.color2 {
+  fill: limegreen;
+}
+
+.color3 {
+  fill: darkgreen;
+}
+
+.color4 {
+  fill: lawngreen;
+}
+
+.color5 {
+  fill: palegreen;
+}
+
+.color6 {
+  fill: seagreen;
+}
+
+.color7 {
+  fill: lightgreen;
+}
+
+.falling .color1 {
+  fill: brown;
+}
+
+.falling .color2 {
+  fill: sandybrown;
+}
+
+.falling .color3 {
+  fill: darksalmon;
+}
+
+.falling .color4 {
+  fill: beige;
+}
+
+.falling .color5 {
+  fill: burlywood;
+}
+
+.falling .color6 {
+  fill: chocolate;
+}
+
+.falling .color7 {
+  fill: firebrick;
 }

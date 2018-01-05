@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
+import Leaf from '../Leaf';
+
 class Rectangle extends Component {
-	cutoff = 5;
+	cutoff = 25;
 	defaultAngle = 45;
-	greens = ['green', 'limegreen', 'darkgreen', 'lawngreen', 'palegreen', 'seagreen',  'lightgreen'];
 	pi180 = Math.PI / 180;
 	sqrt2over2 = Math.sqrt(2)/2;
 
@@ -13,17 +14,76 @@ class Rectangle extends Component {
 	constructor(props) {
 		super(props)
 
+		const rotationRadians = this.props.rotation * this.pi180;
+		const rotCos = Math.cos(rotationRadians);
+		const rotSin = Math.sin(rotationRadians);
+		const { size, anchorPoint, rotation, type, generation, falling } = this.props;
+
+		const colorClass = 'color'+ (Math.ceil(Math.random() * 7));
+
+
 		let stepAngle = this.defaultAngle;
 		if  (this.props.generation > 3) {
 			stepAngle = Math.ceil(Math.random() * 18) * 5;
 		}
 
+		let childPosition1 = {};
+		let childPosition2 = {};
+		const childAngle = (type === 'left' || type === 'root') ? (rotation + stepAngle) : (rotation - (90 - stepAngle));
+		const childSize = this.sqrt2over2 * size;
+
+
+		const pointsArray = [];
+		pointsArray[0] = anchorPoint;
+		pointsArray[2] = { x: anchorPoint.x + size * (rotCos - rotSin), y: anchorPoint.y + size * (rotSin + rotCos) };
+		if (type === 'left' || type === 'root') {
+			pointsArray[1] = { x: anchorPoint.x + (size * rotCos), y: anchorPoint.y + (size * rotSin) };
+			pointsArray[3] = { x: anchorPoint.x - size * rotSin, y: anchorPoint.y + size * rotCos };
+			
+			childPosition1 = {
+				anchorPoint: pointsArray[3],
+				angle: childAngle
+			};
+
+			childPosition2 = {
+				anchorPoint: pointsArray[2],
+				angle: childAngle
+			};
+		} else {
+			pointsArray[1] = { x: anchorPoint.x - size * rotSin, y: anchorPoint.y + size * rotCos };
+			pointsArray[3] = { x: anchorPoint.x + (size * rotCos), y: anchorPoint.y + (size * rotSin) };
+
+			childPosition1 = {
+				anchorPoint: pointsArray[2],
+				angle: childAngle
+			};
+
+			childPosition2 = {
+				anchorPoint: pointsArray[3],
+				angle: childAngle
+			};
+		}
+
+
+		const thisMid = (typeof this.props.midPoint !== 'undefined') ? this.props.midPoint : this.getMidPoint(pointsArray[0].x, pointsArray[0].y, size, size, rotation);
+		const midPoint1 = this.getMidPoint(childPosition1.anchorPoint.x, childPosition1.anchorPoint.y, childSize, childSize, childPosition1.angle);
+		const midPoint2 = this.getMidPoint(childPosition2.anchorPoint.x, childPosition2.anchorPoint.y, childSize, childSize, childPosition2.angle);
+
+
+
 		this.state = {
 			loadChildren: false,
 			animating: false,
 			stepAngle: stepAngle,
-			opacity: (this.props.size < 190) ? (Math.random() * .75 + .25) : 1
-
+			opacity: (this.props.size < 190) ? (Math.random() * .75 + .25) : 1,
+			points: pointsArray,
+			thisMid: thisMid,
+			midPoint1: midPoint1,
+			midPoint2: midPoint2,
+			childPosition1: childPosition1,
+			childPosition2: childPosition2,
+			childSize: childSize,
+			colorClass: colorClass,
 		}
 	}
 
@@ -31,16 +91,12 @@ class Rectangle extends Component {
 		const childDelay = (this.props.childDelay / this.props.generation);
 		setTimeout(() => {
 			this.setState({ animating: true });
-		}, Math.min(10, childDelay - 1));
+		}, Math.max(1, childDelay - 1));
 
 		setTimeout(() => {
 			this.setState({ loadChildren: true });
 		}, childDelay);
 
-	}
-
-	componentWillReceiveProps = (nextProps) => {
-		console.log(nextProps);
 	}
 
 	getMidPoint = (x, y, width, height, angle_degrees) => {
@@ -57,65 +113,8 @@ class Rectangle extends Component {
 
 
 	render() {
-		const { stepAngle, opacity } = this.state;
+		const { stepAngle, opacity, points, childPosition1, childPosition2, thisMid, midPoint1, midPoint2, childSize, colorClass } = this.state;
 		const { size, anchorPoint, rotation, type, generation, falling } = this.props;
-		const rotationRadians = rotation * this.pi180;
-		const rotCos = Math.cos(rotationRadians);
-		const rotSin = Math.sin(rotationRadians);
-
-		//console.log('rect-', (this.props.childDelay / this.props.generation));
-
-		let childPosition1 = {};
-		let childPosition2 = {};
-		const childAngle = (type === 'left' || type === 'root') ? (rotation + stepAngle) : (rotation - (90 - stepAngle));
-		const childSize = this.sqrt2over2 * size;
-
-
-		const points = [];
-		points[0] = anchorPoint;
-		points[2] = { x: anchorPoint.x + size * (rotCos - rotSin), y: anchorPoint.y + size * (rotSin + rotCos) };
-
-		if (type === 'left' || type === 'root') {
-		//	points[1] = { x: anchorPoint.x + (size * rotCos), y: anchorPoint.y + (size * rotSin) };
-			points[3] = { x: anchorPoint.x - size * rotSin, y: anchorPoint.y + size * rotCos };
-			
-			childPosition1 = {
-				anchorPoint: points[3],
-				angle: childAngle
-			};
-
-			childPosition2 = {
-				anchorPoint: points[2],
-				angle: childAngle
-			};
-		} else {
-		//	points[1] = { x: anchorPoint.x - size * rotSin, y: anchorPoint.y + size * rotCos };
-			points[3] = { x: anchorPoint.x + (size * rotCos), y: anchorPoint.y + (size * rotSin) };
-
-			childPosition1 = {
-				anchorPoint: points[2],
-				angle: childAngle
-			};
-
-			childPosition2 = {
-				anchorPoint: points[3],
-				angle: childAngle
-			};
-		}
-
-
-		//const midPoint = this.getMidPoint(points[0].x, points[0].y, size, size, rotation);
-		const thisMid = (typeof this.props.midPoint !== 'undefined') ? this.props.midPoint : this.getMidPoint(points[0].x, points[0].y, size, size, rotation);
-		const midPoint1 = this.getMidPoint(childPosition1.anchorPoint.x, childPosition1.anchorPoint.y, childSize, childSize, childPosition1.angle);
-		const midPoint2 = this.getMidPoint(childPosition2.anchorPoint.x, childPosition2.anchorPoint.y, childSize, childSize, childPosition2.angle);
-	
-
-
-		/* const polyString = points.map(function(pt) {
-			return pt.x + ',' + pt.y
-		}).join(','); */
-
-		const animationClass = (this.state.animating) ? '' : 'start';
 
 		const branchWidth = Math.max((size / 10), 2);
 		const lineLeft = {
@@ -127,16 +126,12 @@ class Rectangle extends Component {
 			strokeWidth: branchWidth
 		};
 
-		const ranColor = this.greens[Math.floor(Math.random() * this.greens.length)];
-		const drawRadius = (this.props.generation < 5) ? size * 0.5 :  size ;
-
-		const yPos = (falling) ? 0 : thisMid.y
 
 		let circle = null;
 		if (this.props.generation < 3) { 
 			circle = <circle cx={thisMid.x} cy={thisMid.y} r={branchWidth * .75} fill='slategray' />;
 		} else {
-			circle = <circle className={'leaf ' + animationClass} cx={thisMid.x} cy={yPos} r={drawRadius} fill={ranColor} fillOpacity={opacity} />;
+			circle = <Leaf size={size} position={thisMid} generation={this.props.generation} />;
 		}
 
 
@@ -157,7 +152,6 @@ class Rectangle extends Component {
 							<Fragment>
 								<Rectangle generation={this.props.generation + 1} size={childSize} anchorPoint={childPosition1.anchorPoint} midPoint={midPoint1} rotation={childPosition1.angle} type='left' falling={falling} />
 								<Rectangle generation={this.props.generation + 1} size={childSize} anchorPoint={childPosition2.anchorPoint} midPoint={midPoint2} rotation={childPosition2.angle} type='right' falling={falling} />
-
 							</Fragment>
 						)
 						
@@ -190,8 +184,8 @@ Rectangle.defaultProps = {
 	rotationPoint: null,
 	color: "black",
 	isRoot: false,
-	childDelay: 100,
+	childDelay: 0,
 	falling: false
 };
 
-export default Rectangle; 
+export default Rectangle

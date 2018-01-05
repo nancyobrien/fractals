@@ -2,25 +2,36 @@ import { fromJS } from "immutable";
 import { createSelector } from "reselect";
 
 export const CONSTANTS = {
-	ACTION1: 'main/action1',
-	ACTION2: 'main/action2'
+	toggleSeason: 'main/toggleSeason',
+	ACTION2: 'main/triggerRedraw'
 }
 
-export const actionItem = text => ({
-	type: CONSTANTS.ACTION1,
+export const toggleSeason = text => ({
+	type: CONSTANTS.toggleSeason,
 	payload: {text}
 });
 
-const initialState = {}
+export const triggerRedraw = text => ({
+	type: CONSTANTS.toggleSeason,
+	payload: {text}
+});
+
+const initialState = {
+	falling: false,
+	redraw: 0
+}
 
 const reducer = (state = fromJS(initialState), action) => {
 	const { type, payload } = action;
 
 	switch (type) {
-		case CONSTANTS.ACTION1:
-			return state
-		case CONSTANTS.ACTION2:
-			return state
+		case CONSTANTS.toggleSeason:
+			const currentFallSate = state.get('falling');
+			return state.set('falling', !currentFallSate);
+
+		case CONSTANTS.triggerRedraw:
+			const redrawCounter = state.get('redraw') + 1;
+			return state.set('redraw', redrawCounter);
 		default:
 			return state
 	}
@@ -29,8 +40,15 @@ const reducer = (state = fromJS(initialState), action) => {
 export default reducer;
 
 //Selectors
-const getStateImmutable = state => state.get('main', fromJS(initialState));
+const getStateImmutable = state => state.get('mainState', fromJS(initialState));
 
 export const getState = createSelector([getStateImmutable], stateObj => 
 	stateObj.toJS()
+);
+
+export const isFalling = createSelector([getStateImmutable], stateObj => 
+	stateObj.get('falling')
+);
+export const redraw = createSelector([getStateImmutable], stateObj => 
+	stateObj.get('redraw')
 );

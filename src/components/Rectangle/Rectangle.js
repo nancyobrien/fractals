@@ -131,7 +131,11 @@ class Rectangle extends Component {
 		if (this.props.generation < 3) { 
 			circle = <circle cx={thisMid.x} cy={thisMid.y} r={branchWidth * .75} fill='slategray' />;
 		} else {
+<<<<<<< HEAD
 			circle = <Leaf size={size} position={thisMid} generation={this.props.generation}  />;
+=======
+			circle = <Leaf size={size} position={thisMid} generation={this.props.generation} />;
+>>>>>>> 057bfb887cb68d2b6ffca9a5192d2b891e1a9417
 		}
 
 

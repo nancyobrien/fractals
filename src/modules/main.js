@@ -3,12 +3,17 @@ import { createSelector } from "reselect";
 
 export const CONSTANTS = {
 	toggleSeason: 'main/toggleSeason',
+<<<<<<< HEAD
 	setWindSpeed: 'main/setWindSpeed',
 	triggerRedraw: 'main/triggerRedraw'
+=======
+	ACTION2: 'main/triggerRedraw'
+>>>>>>> 057bfb887cb68d2b6ffca9a5192d2b891e1a9417
 }
 
 export const toggleSeason = text => ({
 	type: CONSTANTS.toggleSeason,
+<<<<<<< HEAD
 	payload: { text }
 });
 
@@ -22,6 +27,16 @@ export const triggerRedraw = text => ({
 	payload: {text}
 });
 
+=======
+	payload: {text}
+});
+
+export const triggerRedraw = text => ({
+	type: CONSTANTS.toggleSeason,
+	payload: {text}
+});
+
+>>>>>>> 057bfb887cb68d2b6ffca9a5192d2b891e1a9417
 const initialState = {
 	falling: false,
 	redraw: 0

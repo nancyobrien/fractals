@@ -1,0 +1,74 @@
+.leafContainer {
+	//transition: none;
+	transition: all 100ms cubic-bezier(0.510, 1.255, 1.000, 0.450);
+	transition-timing-function: cubic-bezier(0.510, 1.255, 1.000, 0.450);
+
+	&.falling {
+		transition: transform ease-out 1000ms;
+	}
+}
+.leaf {
+	transition: fill ease-in 500ms, transform ease-out 10ms;
+	transform: scale(1, 1);
+	transform-origin: center;
+
+	&.start {
+		transition: fill ease-in 250ms;
+		transform: scale(0, 0);
+	}
+}
+
+.seasonChanger {
+	position: absolute;
+	top: 1em;
+	left: 1em;
+}
+
+.color1 {
+	fill: green;
+}
+.color2 {
+	fill: limegreen;
+}
+.color3 {
+	fill: darkgreen;
+}
+.color4 {
+	fill: lawngreen;
+}
+.color5 {
+	fill: palegreen;
+}
+.color6 {
+	fill: seagreen;
+}
+.color7 {
+	fill: lightgreen;
+}
+
+
+.falling {
+
+	.color1 {
+		fill: brown;
+	}
+	.color2 {
+		fill: sandybrown;
+	}
+	.color3 {
+		fill: darksalmon;
+	}
+	.color4 {
+		fill: beige;
+	}
+	.color5 {
+		fill: burlywood;
+	}
+	.color6 {
+		fill: chocolate;
+	}
+	.color7 {
+		fill: firebrick;
+	}
+	
+}

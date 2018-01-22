@@ -16,11 +16,13 @@
   "keywords": [],
   "author": "NDO",
   "license": "ISC",
+  "homepage": "https: //nancyobrien.github.io/fractals/",
   "dependencies": {
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
     "memoize": "^0.1.1",
     "node-sass": "^4.7.2",
+    "rc-slider": "^8.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
